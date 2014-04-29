@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "/home/tbeek/workspace/log4j.dtd" >
+<log4j:configuration>
+	<!-- direct log messages below info threshold to stdout -->
+	<appender name="ConsoleOut" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %d{ISO8601}%t %c{1}:%L - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="trace" />
+			<param name="LevelMax" value="info" />
+		</filter>
+	</appender>
+
+	<!-- direct log messages above warn threshold to stderr	-->
+	<appender name="ConsoleErr" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.err" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %d{ISO8601}%t %t %c{1}:%L - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="warn" />
+		</filter>
+	</appender>
+	
+	<!-- log-level for only the celery logger -->
+	<logger name="nl.ru.cmbi.celery">
+		<level value="debug" />
+		<!--  <level value="trace" /> -->
+	</logger>
+
+	<!-- set log levels - for more verbose logging change 'info' to 'debug' -->
+	<root>
+		<priority value="info" />
+		<appender-ref ref="ConsoleOut" />
+		<appender-ref ref="ConsoleErr" />
+	</root>
+</log4j:configuration>
