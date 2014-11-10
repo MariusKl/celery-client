@@ -196,7 +196,6 @@ public class CeleryClient implements Closeable {
 		}
 	}
 
-	@Override
 	public void close() throws IOException {
 		if (conn != null) {
 			conn.close();

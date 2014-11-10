@@ -59,6 +59,11 @@ public class CeleryFuture implements Future<String> {
 
 	private volatile JobState	finalState			= null;
 
+	public CeleryFuture(CeleryClient celeryClient, String uniqueId) {
+		this.parent = celeryClient;
+		this.taskId = uniqueId;
+	}
+
 	/**
 	 * Consumes the entire queue for this job, returning only the most
 	 * recent result (Only to be used by {@link #getJobState(long)}.)
@@ -151,7 +156,6 @@ public class CeleryFuture implements Future<String> {
 	 * @return true if the cancel-message was successfully transmitted
 	 *         (actual termination is assumed, but not checked nor waited for).
 	 */
-	@Override
 	@Synchronized
 	public boolean cancel(final boolean mayInterruptIfRunning) {
 		if (isDone())
@@ -193,7 +197,6 @@ public class CeleryFuture implements Future<String> {
 	 * 
 	 * @see java.util.concurrent.Future#get()
 	 */
-	@Override
 	public String get() throws InterruptedException, ExecutionException, CancellationException {
 		JobState state;
 		do {
@@ -226,7 +229,6 @@ public class CeleryFuture implements Future<String> {
 	 * @see java.util.concurrent.Future#get(long, java.util.concurrent.TimeUnit)
 	 */
 	@SuppressWarnings("incomplete-switch")
-	@Override
 	public String get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, CancellationException, TimeoutException {
 
 		long waitMillis = 0;
@@ -262,12 +264,10 @@ public class CeleryFuture implements Future<String> {
 		throw new TimeoutException("Timeout while waiting for Celery Task result (in state " + state + ")");
 	}
 
-	@Override
 	public boolean isCancelled() {
 		return finalState == JobState.CANCELLED;
 	}
 
-	@Override
 	public boolean isDone() {
 		return finalState != null;
 	}

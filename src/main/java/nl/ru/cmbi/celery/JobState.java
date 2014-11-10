@@ -25,4 +25,8 @@ public enum JobState {
 	private JobState(final boolean isDoneState) {
 		this.isDoneState = isDoneState;
 	}
+	
+	public boolean isDoneState(){
+		return this.isDoneState;
+	}
 }
